@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แบบฟอร์มสัมภาษณ์เข้าบ้าน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12141c; --panel:#1b1e2b; --line:#2c3042; --text:#eceef5; --muted:#9aa0b8;
+  --accent:#ff5c6c; --accent-ink:#2a0a0f; --ok:#4fd1a1; --warn:#f2b84b;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans Thai",system-ui,sans-serif;line-height:1.65;padding:24px 16px 64px}
+.wrap{max-width:640px;margin:0 auto}
+h1{font-family:"Mitr",sans-serif;font-weight:500;font-size:clamp(28px,7vw,40px);line-height:1.2;margin:8px 0 6px}
+.sub{color:var(--muted);margin:0 0 28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+label.q{display:block;font-weight:600;margin-bottom:8px}
+.hint{display:block;font-weight:400;color:var(--muted);font-size:14px}
+input[type=text],textarea,select{width:100%;background:#12141c;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font:inherit}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg label{flex:1 1 0;min-width:110px;text-align:center;border:1px solid var(--line);border-radius:10px;padding:11px 8px;cursor:pointer;background:#12141c}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--accent-ink)}
+.seg label:has(input:checked){background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.rules{list-style:none;margin:0 0 16px;padding:0}
+.rules li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rules li:last-child{border-bottom:0}
+.rules .warn{color:var(--warn)}
+.check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:600}
+.check input{width:20px;height:20px;margin-top:4px;accent-color:var(--accent);flex:none}
+.notice{border-left:4px solid var(--warn);background:#221f16;border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:16px}
+.notice b{color:var(--warn)}
+.tag{display:inline-block;background:#12141c;border:1px solid var(--line);border-radius:6px;padding:0 8px;font-family:"Mitr",sans-serif}
+button.send{width:100%;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:15px;font:600 17px "Noto Sans Thai",sans-serif;cursor:pointer}
+button.send:disabled{opacity:.55;cursor:wait}
+.msg{margin-top:14px;padding:12px 14px;border-radius:10px;display:none}
+.msg.ok{display:block;background:#12261f;border:1px solid var(--ok);color:var(--ok)}
+.msg.err{display:block;background:#2a1519;border:1px solid var(--accent);color:#ffb3bb}
+.err-t{color:#ffb3bb;font-size:14px;margin-top:6px;display:none}
+.invalid .err-t{display:block}
+.invalid input[type=text],.invalid textarea{border-color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){ button.send{transition:transform .12s} button.send:active{transform:scale(.98)} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>แบบฟอร์มสัมภาษณ์เข้าบ้าน</h1>
+  <p class="sub">ตอบให้ครบทุกข้อ แล้วกดส่ง แอดมินจะตรวจและแจ้งผลในดิส</p>
+
+  <form id="f" novalidate>
+    <div class="card" data-f="q1">
+      <label class="q">1. มี โร. พร้อมซื้อเสื้อไหม</label>
+      <div class="seg">
+        <label><input type="radio" name="q1" value="มี พร้อมซื้อ"><span>มี พร้อมซื้อ</span></label>
+        <label><input type="radio" name="q1" value="ไม่พร้อม"><span>ไม่พร้อม</span></label>
+      </div>
+      <div class="err-t">กรุณาเลือกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q2">
+      <label class="q">2. พร้อมเปลี่ยนชื่อไหม</label>
+      <div class="seg">
+        <label><input type="radio" name="q2" value="พร้อม"><span>พร้อม</span></label>
+        <label><input type="radio" name="q2" value="ไม่พร้อม"><span>ไม่พร้อม</span></label>
+      </div>
+      <div class="err-t">กรุณาเลือกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q3">
+      <label class="q" for="q3">3. เคยอยู่บ้านไหนมาก่อนไหม <span class="hint">ถ้าเคย บอกชื่อบ้านด้วย</span></label>
+      <input type="text" id="q3" name="q3" autocomplete="off">
+      <div class="err-t">กรุณากรอกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q4">
+      <label class="q" for="q4">4. อายุเท่าไร / ชื่ออะไร</label>
+      <input type="text" id="q4" name="q4" placeholder="เช่น 16 / ต้นกล้า" autocomplete="off">
+      <div class="err-t">กรุณากรอกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q5">
+      <label class="q">5. มีเวลาเล่นเยอะไหม</label>
+      <div class="seg">
+        <label><input type="radio" name="q5" value="เยอะ"><span>เยอะ</span></label>
+        <label><input type="radio" name="q5" value="ปานกลาง"><span>ปานกลาง</span></label>
+        <label><input type="radio" name="q5" value="น้อย"><span>น้อย</span></label>
+      </div>
+      <div class="err-t">กรุณาเลือกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q6">
+      <label class="q">6. ไม่เอารหัส รองรับแค่รหัสหลัก</label>
+      <div class="seg">
+        <label><input type="radio" name="q6" value="รับได้"><span>รับได้</span></label>
+        <label><input type="radio" name="q6" value="รับไม่ได้"><span>รับไม่ได้</span></label>
+      </div>
+      <div class="err-t">กรุณาเลือกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q7">
+      <label class="q" for="q7">7. ทำไมถึงอยากเข้าบ้าน</label>
+      <textarea id="q7" name="q7"></textarea>
+      <div class="err-t">กรุณากรอกคำตอบ</div>
+    </div>
+
+    <div class="card" data-f="q8">
+      <label class="q">8. 📌 ข้อนี้อ่านด้วย</label>
+      <ul class="rules">
+        <li><span>🎯</span> ไม่บังคับให้เล่นตลอด</li>
+        <li><span>📝</span> หากไม่ว่างให้แจ้งลา</li>
+        <li><span>🤝</span> ช่วยเหลือ ไม่ตีกัน</li>
+        <li><span>🙏</span> เคารพพี่น้องและสมาชิกทุกคน</li>
+        <li><span>🚫</span> ไม่ด่าหรือหาเรื่องกัน</li>
+        <li><span>🔫</span> ไม่ยิงกัน</li>
+        <li><span>⚔️</span> ไม่ฟันกัน</li>
+        <li><span>💬</span> เข้าดิสเมื่อมีการเรียกรวม / ประชุม / กิจกรรม</li>
+        <li><span>🎮</span> สามารถเข้าดิสเพื่อลงมาเล่นหรือมาหาเพื่อนเล่นได้</li>
+        <li class="warn"><span>⚠️</span> ไม่ออนเกิน 7 วันบิน หรือไม่ลงดิส 3-4 วันบิน</li>
+      </ul>
+      <label class="check"><input type="checkbox" id="q8"> อ่านครบและยอมรับกฎทุกข้อ</label>
+      <div class="err-t">ต้องยอมรับกฎก่อนส่งฟอร์ม</div>
+    </div>
+
+    <div class="card">
+      <label class="q">9. ⏳ รอผลว่าผ่านหรือไม่ผ่าน</label>
+      <div class="notice"><b>ชื่อลงท้าย</b> &nbsp;<span class="tag">_PNK</span> &nbsp;<span class="tag">_SSS</span></div>
+      <div class="seg" id="suffixWrap" data-f="suffix">
+        <label><input type="radio" name="suffix" value="_PNK"><span>_PNK</span></label>
+        <label><input type="radio" name="suffix" value="_SSS"><span>_SSS</span></label>
+      </div>
+      <div class="err-t">กรุณาเลือกชื่อลงท้ายที่ต้องการ</div>
+    </div>
+
+    <div class="card" data-f="dname">
+      <label class="q" for="dname">10. ชื่อจริงในดิส</label>
+      <input type="text" id="dname" name="dname" autocomplete="off">
+      <div class="err-t">กรุณากรอกชื่อ</div>
+    </div>
+
+    <div class="card" data-f="did">
+      <label class="q" for="did">ไอดีดิส <span class="hint">ตัวเลข 17-20 หลัก (เปิดโหมดนักพัฒนาใน Discord แล้วกดคัดลอก ID)</span></label>
+      <input type="text" id="did" name="did" inputmode="numeric" autocomplete="off">
+      <div class="err-t">ไอดีดิสต้องเป็นตัวเลข 17-20 หลัก</div>
+    </div>
+
+    <p class="sub">รอแอดมินอนุมัติ หลังอนุมัติจะได้ยศทันที</p>
+    <button class="send" id="btn" type="submit">ส่งแบบฟอร์ม</button>
+    <div class="msg" id="msg" role="status"></div>
+  </form>
+</div>
+
+<script>
+// ใส่ลิงก์ Webhook ของช่องรอแอดมินอนุมัติที่นี่ (ห้ามใส่โทเค่นบอทในหน้าเว็บ)
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1559898603580035102/cSLONNnOwWFP1IAVwv16I9RyZ_uc9du95l8YiXzu6b7Mu1YsNLc7un2dwO5kB2x-_ozD";
+
+const f = document.getElementById("f");
+const btn = document.getElementById("btn");
+const msg = document.getElementById("msg");
+
+function val(n){ const r=f.querySelector(`[name="${n}"]:checked`); return r?r.value:(f.elements[n]?.value||"").trim(); }
+
+function validate(){
+  let ok = true, first = null;
+  const mark = (key,good)=>{
+    const card = f.querySelector(`[data-f="${key}"]`);
+    if(!card) return;
+    card.classList.toggle("invalid", !good);
+    if(!good){ ok=false; first = first||card; }
+  };
+  ["q1","q2","q5","q6","suffix"].forEach(k=>mark(k, !!val(k)));
+  ["q3","q4","q7","dname"].forEach(k=>mark(k, val(k).length>0));
+  mark("q8", document.getElementById("q8").checked);
+  mark("did", /^\d{17,20}$/.test(val("did")));
+  if(first) first.scrollIntoView({behavior:"smooth",block:"center"});
+  return ok;
+}
+
+f.addEventListener("submit", async e=>{
+  e.preventDefault();
+  msg.className="msg"; msg.textContent="";
+  if(!validate()) return;
+
+  const d = {
+    q1:val("q1"), q2:val("q2"), q3:val("q3"), q4:val("q4"), q5:val("q5"),
+    q6:val("q6"), q7:val("q7"), suffix:val("suffix"), dname:val("dname"), did:val("did")
+  };
+
+  const payload = {
+    username: "ใบสมัครเข้าบ้าน",
+    embeds: [{
+      title: "📝 ใบสมัครใหม่ รออนุมัติ",
+      color: 0xff5c6c,
+      fields: [
+        {name:"1. มี โร. พร้อมซื้อเสื้อ", value:d.q1},
+        {name:"2. พร้อมเปลี่ยนชื่อ", value:d.q2},
+        {name:"3. เคยอยู่บ้านไหน", value:d.q3},
+        {name:"4. อายุ / ชื่อ", value:d.q4},
+        {name:"5. เวลาเล่น", value:d.q5},
+        {name:"6. รหัสหลักเท่านั้น", value:d.q6},
+        {name:"7. เหตุผลที่อยากเข้า", value:d.q7.slice(0,1000)},
+        {name:"ชื่อลงท้าย", value:d.suffix, inline:true},
+        {name:"ชื่อจริงดิส", value:d.dname, inline:true},
+        {name:"ไอดีดิส", value:`${d.did} (<@${d.did}>)`}
+      ],
+      footer:{text:"ยอมรับกฎครบทุกข้อแล้ว"},
+      timestamp:new Date().toISOString()
+    }],
+    allowed_mentions:{parse:[]}
+  };
+
+  if(!WEBHOOK_URL){
+    msg.className="msg err";
+    msg.textContent="ยังไม่ได้ตั้งค่า WEBHOOK_URL ในโค้ด";
+    return;
+  }
+
+  btn.disabled=true; btn.textContent="กำลังส่ง...";
+  try{
+    const r = await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    if(!r.ok) throw new Error(r.status);
+    msg.className="msg ok";
+    msg.textContent="ส่งเรียบร้อย รอแอดมินอนุมัติในดิสได้เลย";
+    f.reset();
+  }catch(err){
+    msg.className="msg err";
+    msg.textContent="ส่งไม่สำเร็จ ลองใหม่อีกครั้ง หรือแจ้งแอดมิน";
+  }finally{
+    btn.disabled=false; btn.textContent="ส่งแบบฟอร์ม";
+  }
+});
+</script>
+</body>
+</html>
